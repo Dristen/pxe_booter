@@ -21,5 +21,5 @@ else
     new_boot_order="$(echo "$pxe_boot"),$(echo "$os_boot")"
     efibootmgr -o "$new_boot_order"
     echo "PXE boot is now the first option in the boot order"
-    sudo reboot
+    reboot
 fi
