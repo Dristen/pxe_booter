@@ -15,10 +15,10 @@ if echo "$first_boot_option" | grep -q "PXE IPv4"; then
     echo "PXE boot is already the first option in the boot order"
 else
     # Get PXE boot option
-    pxe_boot="$(efibootmgr -v | grep -E "^Boot[0-9,A-Z]{4}" | grep "PXE IPv4" | cut -c5-8)"
+    pxe_boot=$(efibootmgr -v | grep -E "^Boot[0-9,A-Z]{4}" | grep "PXE IPv4" | cut -c5-8 | awk '{print $0 ","}' | tr -d '\n')
     
     # Set the boot order to PXE boot followed by the other options
-    new_boot_order="$(echo "$pxe_boot"),$(echo "$os_boot")"
+    new_boot_order="$(echo "$pxe_boot")$(echo "$os_boot")"
     efibootmgr -o "$new_boot_order"
     echo "PXE boot is now the first option in the boot order"
     reboot
